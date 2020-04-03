@@ -56,8 +56,8 @@ public class Bot3 extends Robot {
 		int numPixelCol=600;
 		int tamCelda = 50;       //celdas de 50 x 50
 		int numObstaculos = 40;
-		long semilla = 5;  
-		int nFil = numPixelFila / tamCelda;
+		long semilla = 1;  
+		int nFil = numPixelFila / tamCelda; 
 		int nCol = numPixelCol  / tamCelda;
 
 		Problema problema = new Problema(semilla, numObstaculos, nFil, nCol);
@@ -66,14 +66,19 @@ public class Bot3 extends Robot {
 		problema.generarPosFinal();
 		problema.generarObstaculos();
 
-		//Estado estadoActual = new Estado(inicio/nCol, inicio%nCol); //estado inicial
-		//EstadoGreedy estadoActual = new EstadoGreedy(inicio/nCol, inicio%nCol, 0); //estado inicial
-		EstadoA estadoActual = new EstadoA (inicio/nCol, inicio%nCol, 0); //estado inicial
+
+
+		/*Tres posibles resolucion de problemas, podemos hacerlo con las 3 lineas de abajo, o suando la interfaz creada
+
+		Estado estadoActual = new Estado(inicio/nCol, inicio%nCol); //estado inicial
+		EstadoGreedy estadoActual = new EstadoGreedy(inicio/nCol, inicio%nCol, 0); //estado inicial
+		EstadoA estadoActual = new EstadoA (inicio/nCol, inicio%nCol, 0); //estado inicial */
+
+		InterfazEstado estadoActual = new EstadoGreedy(inicio, nCol, 0);
+
 
 		Tupla[] solucion;
-		//solucion = estadoActual.busquedaAnchura(inicio, nCol);			
-		//solucion = estadoActual.busquedaGreedy(inicio, nCol);			
-		solucion = estadoActual.busquedaA(inicio, nCol);			
+		solucion = estadoActual.busqueda(inicio, nCol);					
 
 		System.out.println(Arrays.toString(solucion));
 		System.out.println(solucion.length);

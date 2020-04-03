@@ -1,6 +1,5 @@
 package prueba;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public interface InterfazEstado {
 
@@ -15,8 +14,6 @@ public interface InterfazEstado {
     public Tupla[] busqueda(int inicio, int nCol);
     
     public boolean finalp();
-    
-    public LinkedList<Estado> sucesores();
     
     public Tupla[] camino();
 }

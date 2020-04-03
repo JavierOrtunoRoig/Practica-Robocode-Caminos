@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 
 
-public class EstadoGreedy implements Comparator <EstadoGreedy>, Comparable <EstadoGreedy>{
+public class EstadoGreedy implements Comparator <EstadoGreedy>, Comparable <EstadoGreedy>, InterfazEstado {
     private int [][] tablero = Problema.tableroInicial;
     private static HashMap <Tupla, Tupla> mapa = new HashMap<>(); 
 
@@ -17,7 +17,6 @@ public class EstadoGreedy implements Comparator <EstadoGreedy>, Comparable <Esta
     private int columnaActual;
 
     private double g;
-    //private double coste;
 
     private Tupla[] camino = null;
 
@@ -42,14 +41,14 @@ public class EstadoGreedy implements Comparator <EstadoGreedy>, Comparable <Esta
     public double getG() {return g;}
 
 
-    public Tupla[] busquedaGreedy(int inicio, int nCol) {
+    public Tupla[] busqueda (int inicio, int nCol) {
         EstadoGreedy estadoActual = new EstadoGreedy(inicio/nCol, inicio%nCol, 0); //estado inicial
 
-        PriorityQueue <EstadoGreedy> cola = estadoActual.sucesores2();
+        PriorityQueue <EstadoGreedy> cola = estadoActual.sucesores();
 
         while (!estadoActual.finalp() && !cola.isEmpty()) { //mientras no llegue al final y la cola tenga número, sigo
 			estadoActual = cola.remove();
-			PriorityQueue<EstadoGreedy> nuevaCola = estadoActual.sucesores2();
+			PriorityQueue<EstadoGreedy> nuevaCola = estadoActual.sucesores();
 			cola.addAll(nuevaCola);
 		}
 		
@@ -60,7 +59,7 @@ public class EstadoGreedy implements Comparator <EstadoGreedy>, Comparable <Esta
         boolean res = filaActual == filaFinal && columnaActual == columnaFinal;
 
         if (res) {
-            camino = camino2();
+            camino = camino();
         }
         return res;
     }
@@ -68,7 +67,7 @@ public class EstadoGreedy implements Comparator <EstadoGreedy>, Comparable <Esta
 
 
 
-    private void meterNuevoNodo2(int nuevoF, int nuevoC, PriorityQueue <EstadoGreedy> nodosAbiertos, double g) {
+    private void meterNuevoNodo(int nuevoF, int nuevoC, PriorityQueue <EstadoGreedy> nodosAbiertos, double g) {
         Tupla nuevoMovimiento = new Tupla(nuevoF, nuevoC);
         Tupla posicionAntigua = new Tupla(filaActual, columnaActual);
 
@@ -79,7 +78,7 @@ public class EstadoGreedy implements Comparator <EstadoGreedy>, Comparable <Esta
         }
     }
 
-    public PriorityQueue<EstadoGreedy> sucesores2() {
+    private PriorityQueue<EstadoGreedy> sucesores() {
         PriorityQueue <EstadoGreedy> nodosAbiertos = new PriorityQueue<>();
 
         int numeroFilas = tablero.length;
@@ -91,24 +90,24 @@ public class EstadoGreedy implements Comparator <EstadoGreedy>, Comparable <Esta
 
                 if ((filaActual - i != 0 || columnaActual - j != 0) && i >= 0 && i <= numeroFilas - 1 && j >= 0 && j <= numeroColumnas - 1) { //Está dentro de los limites de la matriz
                     if ((tablero[i][j] == 0 || tablero[i][j] == 3) && (Math.abs(i-filaActual) + Math.abs(j-columnaActual) == 1)) {//arriba, abajo, izq, der libre
-                        meterNuevoNodo2(i, j, nodosAbiertos, this.g);
+                        meterNuevoNodo(i, j, nodosAbiertos, this.g);
 
                     }   else if ((tablero[i][j] == 0 || tablero[i][j] == 3) && (Math.abs(i-filaActual) + Math.abs(j-columnaActual) != 1)) { //esquinas libres
                         if (i - filaActual > 0 && j - columnaActual > 0) { //esquina sup izq
                             if (i - 1 >= 0 && i - 1<= numeroFilas - 1 && j - 1 >= 0 && j - 1 <= numeroColumnas - 1 && tablero[i-1][j] != 1 && tablero[i][j-1] != 1) {
-                                meterNuevoNodo2(i, j, nodosAbiertos, this.g);
+                                meterNuevoNodo(i, j, nodosAbiertos, this.g);
                                                         } 
                         } else if (i - filaActual > 0 && j - columnaActual < 0) { //esquina sup der
                             if (i - 1 >= 0 && i - 1 <= numeroFilas - 1 && j + 1 >= 0 && j + 1 <= numeroColumnas - 1 && tablero[i-1][j] != 1 && tablero[i][j+1] != 1) {
-                                meterNuevoNodo2(i, j, nodosAbiertos, this.g);
+                                meterNuevoNodo(i, j, nodosAbiertos, this.g);
                             } 
                         } else if (i - filaActual < 0 && j - columnaActual > 0) { //esquina inf izq
                             if (i + 1 >= 0 && i + 1<= numeroFilas - 1 && j - 1 >= 0 && j - 1 <= numeroColumnas - 1 && tablero[i+1][j] != 1 && tablero[i][j-1] != 1) {
-                                meterNuevoNodo2(i, j, nodosAbiertos, this.g);
+                                meterNuevoNodo(i, j, nodosAbiertos, this.g);
                             } 
                         } else { //esquina inf der
                             if (i + 1 >= 0 && i + 1<= numeroFilas - 1 && j + 1 >= 0 && j + 1 <= numeroColumnas - 1 && tablero[i+1][j] != 1 && tablero[i][j+1] != 1) {
-                                meterNuevoNodo2(i, j, nodosAbiertos, this.g);
+                                meterNuevoNodo(i, j, nodosAbiertos, this.g);
                             } 
                         }
                     }  
@@ -119,7 +118,7 @@ public class EstadoGreedy implements Comparator <EstadoGreedy>, Comparable <Esta
         return nodosAbiertos;
     }
 
-    public Tupla[] camino2() {
+    public Tupla[] camino() {
         Tupla[] path = new Tupla[1];
 
         Tupla fin, ini;

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 
-public class Estado {
+public class Estado implements InterfazEstado {
     private int [][] tablero = Problema.tableroInicial;
     private static HashMap <Tupla, Tupla> mapa = new HashMap<>(); 
     //private static HashMap <TuplaCostes, TuplaCostes> mapa2 = new HashMap<>(); 
@@ -39,7 +39,7 @@ public class Estado {
     public int getColumnaActualEstado() {return columnaActual;}
 
 
-    public Tupla[] busquedaAnchura(int inicio, int nCol) {
+    public Tupla[] busqueda(int inicio, int nCol) {
 
         Estado estadoActual = new Estado(inicio/nCol, inicio%nCol); //estado inicial
 		LinkedList<Estado> cola = estadoActual.sucesores(); //sucesores del incial
@@ -76,7 +76,7 @@ public class Estado {
         }
     }
 
-    public LinkedList<Estado> sucesores() {
+    private LinkedList<Estado> sucesores() {
         LinkedList <Estado> nodosAbiertos = new LinkedList<>();
 
         int numeroFilas = tablero.length;

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 
 
-public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>{
+public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>, InterfazEstado{
     private int [][] tablero = Problema.tableroInicial;
     private static HashMap <Tupla, Tupla> mapa = new HashMap<>(); 
 
@@ -41,17 +41,17 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>{
 
     public int getColumnaActualEstado() {return columnaActual;}
 
-    public double getG() {return g;}
+    //private double getG() {return g;}
 
 
-    public Tupla[] busquedaA(int inicio, int nCol) {
+    public Tupla[] busqueda(int inicio, int nCol) {
         EstadoA estadoActual = new EstadoA(inicio/nCol, inicio%nCol, 0); //estado inicial
 
-        PriorityQueue <EstadoA> cola = estadoActual.sucesores2();
+        PriorityQueue <EstadoA> cola = estadoActual.sucesores();
 
         while (!estadoActual.finalp() && !cola.isEmpty()) { //mientras no llegue al final y la cola tenga número, sigo
 			estadoActual = cola.remove();
-			PriorityQueue<EstadoA> nuevaCola = estadoActual.sucesores2();
+			PriorityQueue<EstadoA> nuevaCola = estadoActual.sucesores();
 			cola.addAll(nuevaCola);
 		}
 		
@@ -62,7 +62,7 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>{
         boolean res = filaActual == filaFinal && columnaActual == columnaFinal;
 
         if (res) {
-            camino = camino2();
+            camino = camino();
         }
         return res;
     }
@@ -70,7 +70,7 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>{
 
 
 
-    private void meterNuevoNodo2(int nuevoF, int nuevoC, PriorityQueue <EstadoA> nodosAbiertos, double g) {
+    private void meterNuevoNodo(int nuevoF, int nuevoC, PriorityQueue <EstadoA> nodosAbiertos, double g) {
         Tupla nuevoMovimiento = new Tupla(nuevoF, nuevoC);
         Tupla posicionAntigua = new Tupla(filaActual, columnaActual);
 
@@ -81,7 +81,7 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>{
         }
     }
 
-    public PriorityQueue<EstadoA> sucesores2() {
+    private PriorityQueue<EstadoA> sucesores() {
         PriorityQueue <EstadoA> nodosAbiertos = new PriorityQueue<>();
 
         int numeroFilas = tablero.length;
@@ -93,24 +93,24 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>{
 
                 if ((filaActual - i != 0 || columnaActual - j != 0) && i >= 0 && i <= numeroFilas - 1 && j >= 0 && j <= numeroColumnas - 1) { //Está dentro de los limites de la matriz
                     if ((tablero[i][j] == 0 || tablero[i][j] == 3) && (Math.abs(i-filaActual) + Math.abs(j-columnaActual) == 1)) {//arriba, abajo, izq, der libre
-                        meterNuevoNodo2(i, j, nodosAbiertos, this.g);
+                        meterNuevoNodo(i, j, nodosAbiertos, this.g);
 
                     }   else if ((tablero[i][j] == 0 || tablero[i][j] == 3) && (Math.abs(i-filaActual) + Math.abs(j-columnaActual) != 1)) { //esquinas libres
                         if (i - filaActual > 0 && j - columnaActual > 0) { //esquina sup izq
                             if (i - 1 >= 0 && i - 1<= numeroFilas - 1 && j - 1 >= 0 && j - 1 <= numeroColumnas - 1 && tablero[i-1][j] != 1 && tablero[i][j-1] != 1) {
-                                meterNuevoNodo2(i, j, nodosAbiertos, this.g);
+                                meterNuevoNodo(i, j, nodosAbiertos, this.g);
                                                         } 
                         } else if (i - filaActual > 0 && j - columnaActual < 0) { //esquina sup der
                             if (i - 1 >= 0 && i - 1 <= numeroFilas - 1 && j + 1 >= 0 && j + 1 <= numeroColumnas - 1 && tablero[i-1][j] != 1 && tablero[i][j+1] != 1) {
-                                meterNuevoNodo2(i, j, nodosAbiertos, this.g);
+                                meterNuevoNodo(i, j, nodosAbiertos, this.g);
                             } 
                         } else if (i - filaActual < 0 && j - columnaActual > 0) { //esquina inf izq
                             if (i + 1 >= 0 && i + 1<= numeroFilas - 1 && j - 1 >= 0 && j - 1 <= numeroColumnas - 1 && tablero[i+1][j] != 1 && tablero[i][j-1] != 1) {
-                                meterNuevoNodo2(i, j, nodosAbiertos, this.g);
+                                meterNuevoNodo(i, j, nodosAbiertos, this.g);
                             } 
                         } else { //esquina inf der
                             if (i + 1 >= 0 && i + 1<= numeroFilas - 1 && j + 1 >= 0 && j + 1 <= numeroColumnas - 1 && tablero[i+1][j] != 1 && tablero[i][j+1] != 1) {
-                                meterNuevoNodo2(i, j, nodosAbiertos, this.g);
+                                meterNuevoNodo(i, j, nodosAbiertos, this.g);
                             } 
                         }
                     }  
@@ -121,7 +121,7 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>{
         return nodosAbiertos;
     }
 
-    public Tupla[] camino2() {
+    public Tupla[] camino() {
         Tupla[] path = new Tupla[1];
 
         Tupla fin, ini;
