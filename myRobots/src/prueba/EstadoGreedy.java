@@ -20,7 +20,11 @@ public class EstadoGreedy implements Comparator <EstadoGreedy>, Comparable <Esta
 
     private Tupla[] camino = null;
 
-
+    /**
+     * @param f es la fila del estado
+     * @param c es la cloumna del nuevo estado
+     * @param g es el coste 
+     */
 
     public EstadoGreedy(int f, int c, double g) {
         filaActual = f;
@@ -28,18 +32,43 @@ public class EstadoGreedy implements Comparator <EstadoGreedy>, Comparable <Esta
         this.g = g;
     }
 
-
+    /**
+     * @return Array de Tuplas con el camino desde inicio hasta fin
+     */
 
     public Tupla[] getCamino() {return camino;}
 
+    /**
+     * @return Mapa con todos los estados y sus padres.
+     */
+
     public HashMap <Tupla, Tupla> getMapa() {return mapa;}
+
+    /**
+     * @return Devuelve la fila del estado.
+     */
 
     public int getFilaActualEstado() {return filaActual;}
 
+    /**
+     * @return Devuelve la columna del estado.
+     */
+
     public int getColumnaActualEstado() {return columnaActual;}
+
+    /**
+     * 
+     * @return El coste g actual
+     */
 
     public double getG() {return g;}
 
+
+    /**
+     * @param inicio es un valor entre 0 y AxB - 1 (siendo A y B el número de filas y columnas respectivamente).
+     * @param nCol  es el número de columnas que hay en la matriz
+     * @return Lista de Tuplas con el camino desde el inicio hasta la meta.
+     */
 
     public Tupla[] busqueda (int inicio, int nCol) {
         EstadoGreedy estadoActual = new EstadoGreedy(inicio/nCol, inicio%nCol, 0); //estado inicial
@@ -55,6 +84,10 @@ public class EstadoGreedy implements Comparator <EstadoGreedy>, Comparable <Esta
         return estadoActual.getCamino();
     }
 
+    /**
+     * @return Devuelve true si estamos en el estado final.
+     */
+
     public boolean finalp() {
         boolean res = filaActual == filaFinal && columnaActual == columnaFinal;
 
@@ -64,8 +97,13 @@ public class EstadoGreedy implements Comparator <EstadoGreedy>, Comparable <Esta
         return res;
     }
 
-
-
+    /**
+     * Añade un nuevo nodo en el parámetro nodosAbiertos.
+     * 
+     * @param nuevoF es la fila del nuevo estado.
+     * @param nuevoC es la columna del nuevo estado.
+     * @param nodosAbiertos es la lista de nodos que quedan por explorar.
+     */
 
     private void meterNuevoNodo(int nuevoF, int nuevoC, PriorityQueue <EstadoGreedy> nodosAbiertos, double g) {
         Tupla nuevoMovimiento = new Tupla(nuevoF, nuevoC);
@@ -77,6 +115,11 @@ public class EstadoGreedy implements Comparator <EstadoGreedy>, Comparable <Esta
             nodosAbiertos.add(nuevoEstado);
         }
     }
+
+    /**
+     * 
+     * @return Devuelve la lista con los nuevos sucesores.
+     */
 
     private PriorityQueue<EstadoGreedy> sucesores() {
         PriorityQueue <EstadoGreedy> nodosAbiertos = new PriorityQueue<>();
@@ -117,6 +160,11 @@ public class EstadoGreedy implements Comparator <EstadoGreedy>, Comparable <Esta
 
         return nodosAbiertos;
     }
+
+    /**
+     * 
+     * @return El camino hasta la meta.
+     */
 
     public Tupla[] camino() {
         Tupla[] path = new Tupla[1];

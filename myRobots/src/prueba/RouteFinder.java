@@ -13,8 +13,6 @@ import robocode.control.RobotSpecification;
  * @date   2018-03-22
  * 
  * Plantilla para la prÃ¡ctica de algoritmos de bÃºsqueda con Robocode (G. Ing. Comp.)
- * 
- * 
  */
 
 public class RouteFinder {
@@ -22,7 +20,7 @@ public class RouteFinder {
 		
 		
 		
-		//Creamos un mapa con los datos especificados
+		// Creamos un mapa con los datos especificados
 		// Create the battlefield
 		
 		int numPixelFila= 800;
@@ -45,7 +43,8 @@ public class RouteFinder {
 
 
 		//AQUÍ SE DEBERÁ DE GENERAR EL MAPA DE OBSTÁCULOS Y LAS POSICIONES INICIAL Y FINAL DEL ROBOT
-		
+		//Usaré el 0 como libre, 1 será obstaculo, 2 sitio de inicio y 3 sitio donde acabar	
+
 		Problema problema = new Problema(semilla, numObstaculos, nFil, nCol);
 		
 		int inicio = problema.generarPosIni();
@@ -55,9 +54,6 @@ public class RouteFinder {
 		int [][] tablero = problema.getTablero();
 
 
-
-		//Usaré el 0 como libre, 1 será obstaculo, 2 sitio de inicio y 3 sitio donde acabar	
-		
 				
 		// Crear el RobocodeEngine desde una instalaciÃ³n en C:/Robocode
 		RobocodeEngine engine =
@@ -138,39 +134,6 @@ public class RouteFinder {
 			
 		System.out.println("Generados " + (indice -1) + " sitting ducks.");
 
-
-		//Estado estadoActual = new Estado(inicio/nCol, inicio%nCol); //estado inicial
-		//EstadoGreedy estadoActual = new EstadoGreedy(inicio/nCol, inicio%nCol, 0); //estado inicial
-		//EstadoA estadoActual = new EstadoA(inicio/nCol, inicio%nCol, 0); //estado inicial
-
-
-		//Tupla[] solucion;
-		//solucion = estadoActual.busquedaAnchura(inicio, nCol);
-		//solucion = estadoActual.busquedaGreedy(inicio, nCol);
-		//solucion = estadoActual.busquedaA(inicio, nCol);
-		//System.out.println(Arrays.toString(solucion));
-		
-
-
-	/*	LinkedList<Estado> cola = estadoActual.sucesores(); //sucesores del incial
-		
-		while (!estadoActual.finalp() && !cola.isEmpty()) { //mientras no llegue al final y la cola tenga número, sigo
-			estadoActual = cola.get(0);
-			cola.remove();
-			LinkedList<Estado> nuevaCola = estadoActual.sucesores();
-			cola.addAll(nuevaCola);
-		}
-		
-		if (estadoActual.getCamino() == null) {
-			System.out.println("No hay camino posible.");
-		} else {
-			System.out.println(Arrays.toString(estadoActual.getCamino()));
-		} */
-
-		
-
-
-				
 		
 		/* 
 		 * Crear y desarrollar la batalla con los robots antes definidos

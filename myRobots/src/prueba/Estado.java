@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 
+
 public class Estado implements InterfazEstado {
     private int [][] tablero = Problema.tableroInicial;
     private static HashMap <Tupla, Tupla> mapa = new HashMap<>(); 
-    //private static HashMap <TuplaCostes, TuplaCostes> mapa2 = new HashMap<>(); 
 
     private int filaFinal = Problema.fFinal;
     private int columnaFinal = Problema.cFinal;
@@ -16,28 +16,50 @@ public class Estado implements InterfazEstado {
     private int filaActual;
     private int columnaActual;
 
-    //private double g;
-    //private double coste;
-
     private Tupla[] camino = null;
 
 
+    /**
+     * @param f es la fila del estado
+     * @param c es la cloumna del nuevo estado
+     */
 
     public Estado(int f, int c) {
         filaActual = f;
         columnaActual = c;
     }
 
-
+    /**
+     * @return Array de Tuplas con el camino desde inicio hasta fin
+     */
 
     public Tupla[] getCamino() {return camino;}
 
+
+    /**
+     * @return Mapa con todos los estados y sus padres.
+     */
+
     public HashMap <Tupla, Tupla> getMapa() {return mapa;}
+
+    /**
+     * @return Devuelve la fila del estado.
+     */
 
     public int getFilaActualEstado() {return filaActual;}
 
+    /**
+     * @return Devuelve la columna del estado.
+     */
+
     public int getColumnaActualEstado() {return columnaActual;}
 
+
+    /**
+     * @param inicio es un valor entre 0 y AxB - 1 (siendo A y B el número de filas y columnas respectivamente).
+     * @param nCol  es el número de columnas que hay en la matriz
+     * @return Lista de Tuplas con el camino desde el inicio hasta la meta.
+     */
 
     public Tupla[] busqueda(int inicio, int nCol) {
 
@@ -56,7 +78,11 @@ public class Estado implements InterfazEstado {
 
     }
 
-    public boolean finalp() {
+    /**
+     * @return Devuelve true si estamos en el estado final.
+     */
+
+    private boolean finalp() {
         boolean res = filaActual == filaFinal && columnaActual == columnaFinal;
 
         if (res) {
@@ -65,6 +91,13 @@ public class Estado implements InterfazEstado {
         return res;
     }
 
+    /**
+     * Añade un nuevo nodo en el parámetro nodosAbiertos.
+     * 
+     * @param nuevoF es la fila del nuevo estado.
+     * @param nuevoC es la columna del nuevo estado.
+     * @param nodosAbiertos es la lista de nodos que quedan por explorar.
+     */
 
     private void meterNuevoNodo(int nuevoF, int nuevoC, LinkedList <Estado> nodosAbiertos) {
         Tupla nuevoMovimiento = new Tupla(nuevoF, nuevoC);
@@ -75,6 +108,11 @@ public class Estado implements InterfazEstado {
             nodosAbiertos.addLast(new Estado(nuevoF, nuevoC));
         }
     }
+
+    /**
+     * 
+     * @return Devuelve la lista con los nuevos sucesores.
+     */
 
     private LinkedList<Estado> sucesores() {
         LinkedList <Estado> nodosAbiertos = new LinkedList<>();
@@ -116,7 +154,12 @@ public class Estado implements InterfazEstado {
         return nodosAbiertos;
     }
 
-    public Tupla[] camino() {
+    /**
+     * 
+     * @return El camino hasta la meta.
+     */
+
+    private Tupla[] camino() {
         Tupla[] path = new Tupla[1];
 
         Tupla fin, ini;

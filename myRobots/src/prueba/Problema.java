@@ -18,6 +18,14 @@ public class Problema {
 	
 	static public int [][] tableroInicial; //Usar� el 0 como libre, 1 ser� obstaculo, 2 sitio de inicio y 3 sitio donde acabar
 	
+
+	/**
+	 * 
+	 * @param seed es la semilla para el Random().
+	 * @param nObstaculos es el número de obsrtaculos.
+	 * @param f es el número de filas.
+	 * @param c es el número de columnas.
+	 */
 	public Problema(long seed, int nObstaculos, int f, int c) {
 		this.seed = seed;
 		this.nObstaculos = nObstaculos;
@@ -29,14 +37,28 @@ public class Problema {
 		tableroInicial = new int[nFil][nCol]; 
 	}
 	
+	/**
+	 * 
+	 * @return Devuelve la matriz del problema.
+	 */
 	public int[][] getTablero() {
 		return tableroInicial;
 	}
+
+	/**
+	 * Establece el tablero del parámetro como nuevo.
+	 * @param nuevoTab es el nuevo tablero.
+	 */
 	public void setTablero(int [][] nuevoTab) {
 		tableroInicial = nuevoTab;
 	}
+
+	/**
+	 * Genera la pocisión inicial del bot.
+	 * @return Una posición entre 0 y AxB - 1 (siendo A el número de filas y B el número de columnas).
+	 */
 	
-	public int  generarPosIni() {
+	public int generarPosIni() {
 		int inicio = rnd.nextInt(nFil*nCol);
 		tableroInicial[inicio/nCol][inicio%nCol] = 2;
 
@@ -45,6 +67,10 @@ public class Problema {
 		
 		return inicio;
 	}
+
+	/**
+	 * Genera la pocisión final del bot.
+	 */
 	
 	public void generarPosFinal() {
 		boolean huecoEncontrado = false;
@@ -60,6 +86,10 @@ public class Problema {
 			}
 		}
 	}
+
+	/**
+	 * Genera los obstáculos del problema.
+	 */
 	
 	public void generarObstaculos() {
 		int i = 0;

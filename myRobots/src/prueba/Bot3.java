@@ -4,7 +4,6 @@ import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 
 import java.awt.Color;
-import java.util.Arrays;
 
 import robocode.Robot;
 
@@ -29,28 +28,13 @@ public class Bot3 extends Robot {
 		// Nuestro robot serÃ¡ rojo
 		setAllColors(Color.red);
 
-		//DATOS QUE DEBEN COINCIDIR CON LOS DEL PROGRAMA main DE LA CLASE RouteFinder
-		//long semilla = 0;
-		//int nFil = 16;
-		//int nCol = 12;
-		//int nObst = 40;
-		//int tamCelda = 50;
-		
+
 		//Orientamos inicialmente el robot hacia arriba
 		turnRight(normalRelativeAngleDegrees(0 - getHeading()));
 		
-		//A continuaciÃ³n nuestro robot girarÃ¡ un poco sobre sÃ­ mismo		
-		/* int k = 0;
-		while(k < 20){
-			turnRight(90);
-			k++;
-		} */
-		
-		
-		// AQUÃ� DEBE:
-		//  1. GENERARSE EL PROBLEMA DE BÃšSQUEDA
-		//  2. BUSCAR LA SOLUCIÃ“N CON UN ALGORITMO DE BÃšSQUEDA
-		//  3. EJECUTAR LA SOLUCIÃ“N ENCONTRADA
+
+
+		//  1. GENERACIÓN DEL PROBLEMA DE BÚSQUEDA
 
 		int numPixelFila= 800;
 		int numPixelCol=600;
@@ -68,53 +52,86 @@ public class Bot3 extends Robot {
 
 
 
+		//  2. BUSQUEDA DE LA SOLUCIÓN CON UN ALGORITMO DE BÚSQUEDA
+
+
 		/*Tres posibles resolucion de problemas, podemos hacerlo con las 3 lineas de abajo, o suando la interfaz creada
 
 		Estado estadoActual = new Estado(inicio/nCol, inicio%nCol); //estado inicial
 		EstadoGreedy estadoActual = new EstadoGreedy(inicio/nCol, inicio%nCol, 0); //estado inicial
 		EstadoA estadoActual = new EstadoA (inicio/nCol, inicio%nCol, 0); //estado inicial */
 
-		InterfazEstado estadoActual = new EstadoGreedy(inicio, nCol, 0);
+		InterfazEstado estadoActual = new EstadoA(inicio/nCol, inicio%nCol, 0);
 
 
 		Tupla[] solucion;
 		solucion = estadoActual.busqueda(inicio, nCol);					
 
-		System.out.println(Arrays.toString(solucion));
-		System.out.println(solucion.length);
+		
+
+		//  3. EJECUCIÓN DE LA SOLUCIÓN ENCONTRADA
+
 
 		for (int i = 0; i < solucion.length - 1; i++) {
-			double gradosNuevos;
 
-			if (solucion[i + 1].getPrimero() < solucion[i].getPrimero() && solucion[i + 1].getSegundo() < solucion[i].getSegundo()) { //esquina sup izq
-				gradosNuevos = 315;
-			} else if (solucion[i + 1].getPrimero() < solucion[i].getPrimero() && solucion[i + 1].getSegundo() > solucion[i].getSegundo()) { //esquina sup der
-				gradosNuevos = 45;
-			} else if (solucion[i + 1].getPrimero() > solucion[i].getPrimero() && solucion[i + 1].getSegundo() < solucion[i].getSegundo()) { //esquina inf izq
-				gradosNuevos = 225;
-			} else if (solucion[i + 1].getPrimero() < solucion[i].getPrimero() && solucion[i + 1].getSegundo() == solucion[i].getSegundo()) { // arriba
-				gradosNuevos = 0;
-			} else if (solucion[i + 1].getPrimero() == solucion[i].getPrimero() && solucion[i + 1].getSegundo() < solucion[i].getSegundo()) { //izq
-				gradosNuevos = 270;
-			} else if (solucion[i + 1].getPrimero() == solucion[i].getPrimero() && solucion[i + 1].getSegundo() > solucion[i].getSegundo()) { //der
-				gradosNuevos = 90;
-			} else if (solucion[i + 1].getPrimero() > solucion[i].getPrimero() && solucion[i + 1].getSegundo() == solucion[i].getSegundo()) { //abajo
-				gradosNuevos = 180;
-			} else { //esquina inf der
-				gradosNuevos = 135;
-			}
+			double gradosNuevos = calculaGrados(solucion, i);
 
-			double distanciaARecorrer;
-			if (gradosNuevos == 0 || gradosNuevos == 90 || gradosNuevos == 180 || gradosNuevos == 270) {
-				distanciaARecorrer = 50;
-			} else {
-				distanciaARecorrer = Math.sqrt(5000);
-			}
-
-			gradosNuevos = gradosNuevos - 90;
-
-			this.turnRight(gradosNuevos + normalRelativeAngleDegrees(0 - getHeading()));
-			this.ahead(distanciaARecorrer);
+			moverBot(gradosNuevos);
+			
 		}
+	}
+
+
+
+	/**
+	 * Mueve al robot por el mapa.
+	 * @param gradosNuevos son los grados nuevos que hay que girar el robot.
+	 */
+
+	private void moverBot(double gradosNuevos) {
+		double distanciaARecorrer;
+		if (gradosNuevos == 0 || gradosNuevos == 90 || gradosNuevos == 180 || gradosNuevos == 270) {
+			distanciaARecorrer = 50;
+		} else {
+			distanciaARecorrer = Math.sqrt(5000);
+		}
+
+		gradosNuevos = gradosNuevos - 90;
+
+		this.turnRight(gradosNuevos + normalRelativeAngleDegrees(0 - getHeading()));
+		this.ahead(distanciaARecorrer);
+	}
+
+
+
+	/**
+	 * 
+	 * @param solucion es la solución generada.
+	 * @param i es la posición del array que estamos mirando.
+	 * @return Los grados que hay que girar el robot.
+	 */
+
+	private double calculaGrados(Tupla[] solucion, int i) {
+		double gradosNuevos;
+
+		if (solucion[i + 1].getPrimero() < solucion[i].getPrimero() && solucion[i + 1].getSegundo() < solucion[i].getSegundo()) { //esquina sup izq
+			gradosNuevos = 315;
+		} else if (solucion[i + 1].getPrimero() < solucion[i].getPrimero() && solucion[i + 1].getSegundo() > solucion[i].getSegundo()) { //esquina sup der
+			gradosNuevos = 45;
+		} else if (solucion[i + 1].getPrimero() > solucion[i].getPrimero() && solucion[i + 1].getSegundo() < solucion[i].getSegundo()) { //esquina inf izq
+			gradosNuevos = 225;
+		} else if (solucion[i + 1].getPrimero() < solucion[i].getPrimero() && solucion[i + 1].getSegundo() == solucion[i].getSegundo()) { // arriba
+			gradosNuevos = 0;
+		} else if (solucion[i + 1].getPrimero() == solucion[i].getPrimero() && solucion[i + 1].getSegundo() < solucion[i].getSegundo()) { //izq
+			gradosNuevos = 270;
+		} else if (solucion[i + 1].getPrimero() == solucion[i].getPrimero() && solucion[i + 1].getSegundo() > solucion[i].getSegundo()) { //der
+			gradosNuevos = 90;
+		} else if (solucion[i + 1].getPrimero() > solucion[i].getPrimero() && solucion[i + 1].getSegundo() == solucion[i].getSegundo()) { //abajo
+			gradosNuevos = 180;
+		} else { //esquina inf der
+			gradosNuevos = 135;
+		}
+
+		return gradosNuevos;
 	}
 }

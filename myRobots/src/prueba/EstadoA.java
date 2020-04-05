@@ -22,6 +22,11 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>, Inte
     private Tupla[] camino = null;
 
 
+    /**
+     * @param f es la fila del estado
+     * @param c es la cloumna del nuevo estado
+     * @param g es el csote g actual
+     */
 
     public EstadoA(int f, int c, double g) {
         filaActual = f;
@@ -31,18 +36,42 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>, Inte
         this.coste = g + Math.abs(f - filaFinal) + Math.abs(c - columnaFinal);
     }
 
-
+    /**
+     * @return Array de Tuplas con el camino desde inicio hasta fin
+     */
 
     public Tupla[] getCamino() {return camino;}
 
+    /**
+     * @return Mapa con todos los estados y sus padres.
+     */
+
     public HashMap <Tupla, Tupla> getMapa() {return mapa;}
+
+    /**
+     * @return Devuelve la fila del estado.
+     */
 
     public int getFilaActualEstado() {return filaActual;}
 
+    /**
+     * @return Devuelve la columna del estado.
+     */
+
     public int getColumnaActualEstado() {return columnaActual;}
 
-    //private double getG() {return g;}
+    /**
+     * 
+     * @return El coste total, suma del coste actual más la función heurística
+     */
 
+    public double getCoste() {return this.coste;}
+
+    /**
+     * @param inicio es un valor entre 0 y AxB - 1 (siendo A y B el número de filas y columnas respectivamente).
+     * @param nCol  es el número de columnas que hay en la matriz
+     * @return Lista de Tuplas con el camino desde el inicio hasta la meta.
+     */
 
     public Tupla[] busqueda(int inicio, int nCol) {
         EstadoA estadoActual = new EstadoA(inicio/nCol, inicio%nCol, 0); //estado inicial
@@ -58,6 +87,10 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>, Inte
         return estadoActual.getCamino();
     }
 
+    /**
+     * @return Devuelve true si estamos en el estado final.
+     */
+
     public boolean finalp() {
         boolean res = filaActual == filaFinal && columnaActual == columnaFinal;
 
@@ -68,7 +101,13 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>, Inte
     }
 
 
-
+    /**
+     * Añade un nuevo nodo en el parámetro nodosAbiertos.
+     * 
+     * @param nuevoF es la fila del nuevo estado.
+     * @param nuevoC es la columna del nuevo estado.
+     * @param nodosAbiertos es la lista de nodos que quedan por explorar.
+     */
 
     private void meterNuevoNodo(int nuevoF, int nuevoC, PriorityQueue <EstadoA> nodosAbiertos, double g) {
         Tupla nuevoMovimiento = new Tupla(nuevoF, nuevoC);
@@ -80,6 +119,11 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>, Inte
             nodosAbiertos.add(nuevoEstado);
         }
     }
+
+    /**
+     * 
+     * @return Devuelve la lista con los nuevos sucesores.
+     */
 
     private PriorityQueue<EstadoA> sucesores() {
         PriorityQueue <EstadoA> nodosAbiertos = new PriorityQueue<>();
@@ -121,6 +165,12 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>, Inte
         return nodosAbiertos;
     }
 
+
+    /**
+     * 
+     * @return El camino hasta la meta.
+     */
+    
     public Tupla[] camino() {
         Tupla[] path = new Tupla[1];
 
