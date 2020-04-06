@@ -74,6 +74,7 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>, Inte
      */
 
     public Tupla[] busqueda(int inicio, int nCol) {
+
         EstadoA estadoActual = new EstadoA(inicio/nCol, inicio%nCol, 0); //estado inicial
 
         PriorityQueue <EstadoA> cola = estadoActual.sucesores();
@@ -81,7 +82,7 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>, Inte
         while (!estadoActual.finalp() && !cola.isEmpty()) { //mientras no llegue al final y la cola tenga número, sigo
 			estadoActual = cola.remove();
 			PriorityQueue<EstadoA> nuevaCola = estadoActual.sucesores();
-			cola.addAll(nuevaCola);
+            cola.addAll(nuevaCola);
 		}
 		
         return estadoActual.getCamino();
@@ -92,6 +93,7 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>, Inte
      */
 
     public boolean finalp() {
+
         boolean res = filaActual == filaFinal && columnaActual == columnaFinal;
 
         if (res) {
@@ -110,6 +112,7 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>, Inte
      */
 
     private void meterNuevoNodo(int nuevoF, int nuevoC, PriorityQueue <EstadoA> nodosAbiertos, double g) {
+
         Tupla nuevoMovimiento = new Tupla(nuevoF, nuevoC);
         Tupla posicionAntigua = new Tupla(filaActual, columnaActual);
 
@@ -126,6 +129,7 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>, Inte
      */
 
     private PriorityQueue<EstadoA> sucesores() {
+
         PriorityQueue <EstadoA> nodosAbiertos = new PriorityQueue<>();
 
         int numeroFilas = tablero.length;
@@ -172,6 +176,7 @@ public class EstadoA implements Comparator <EstadoA>, Comparable <EstadoA>, Inte
      */
     
     public Tupla[] camino() {
+        
         Tupla[] path = new Tupla[1];
 
         Tupla fin, ini;

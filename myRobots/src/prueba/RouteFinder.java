@@ -33,7 +33,7 @@ public class RouteFinder {
 		
 		//semilla para el generador de nÃºmeros aleatorios
 		//DEBERÃ� COINCIDIR CON EL VALOR PROPORCIONADO AL ROBOT
-		long semilla = 1;  
+		long semilla = 0;  
 		
 		//tamaÃ±o del mapa de obstÃ¡culos
 		//DEBERÃ� COINCIDIR CON EL VALOR PROPORCIONADO AL ROBOT

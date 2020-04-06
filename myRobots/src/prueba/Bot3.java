@@ -40,7 +40,7 @@ public class Bot3 extends Robot {
 		int numPixelCol=600;
 		int tamCelda = 50;       //celdas de 50 x 50
 		int numObstaculos = 40;
-		long semilla = 1;  
+		long semilla = 0;  
 		int nFil = numPixelFila / tamCelda; 
 		int nCol = numPixelCol  / tamCelda;
 
@@ -58,10 +58,10 @@ public class Bot3 extends Robot {
 		/*Tres posibles resolucion de problemas, podemos hacerlo con las 3 lineas de abajo, o suando la interfaz creada
 
 		Estado estadoActual = new Estado(inicio/nCol, inicio%nCol); //estado inicial
-		EstadoGreedy estadoActual = new EstadoGreedy(inicio/nCol, inicio%nCol, 0); //estado inicial
+		EstadoGreedy estadoActual = new EstadoGreedy(inicio/nCol, inicio%nCol); //estado inicial
 		EstadoA estadoActual = new EstadoA (inicio/nCol, inicio%nCol, 0); //estado inicial */
 
-		InterfazEstado estadoActual = new EstadoA(inicio/nCol, inicio%nCol, 0);
+		InterfazEstado estadoActual = new Estado(inicio/nCol, inicio%nCol);
 
 
 		Tupla[] solucion;
