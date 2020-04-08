@@ -19,11 +19,12 @@ import robocode.Robot;
  */
 public class Bot3 extends Robot {
 
+
 	//The main method in every robot
 	public void run() {
 				
 
-		System.out.println("Iniciando ejecuciÃ³n del robot");
+		System.out.println("Iniciando ejecución del robot");
 		
 		// Nuestro robot serÃ¡ rojo
 		setAllColors(Color.red);
@@ -55,7 +56,7 @@ public class Bot3 extends Robot {
 		//  2. BUSQUEDA DE LA SOLUCIÓN CON UN ALGORITMO DE BÚSQUEDA
 
 
-		/*Tres posibles resolucion de problemas, podemos hacerlo con las 3 lineas de abajo, o suando la interfaz creada
+		/*Tres posibles resoluciones del problema, podemos hacerlo con las 3 lineas de abajo, o con la interfaz creada
 
 		Estado estadoActual = new Estado(inicio/nCol, inicio%nCol); //estado inicial
 		EstadoGreedy estadoActual = new EstadoGreedy(inicio/nCol, inicio%nCol); //estado inicial
