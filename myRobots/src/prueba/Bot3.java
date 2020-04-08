@@ -41,7 +41,7 @@ public class Bot3 extends Robot {
 		int numPixelCol=600;
 		int tamCelda = 50;       //celdas de 50 x 50
 		int numObstaculos = 40;
-		long semilla = 0;  
+		long semilla = 1;  
 		int nFil = numPixelFila / tamCelda; 
 		int nCol = numPixelCol  / tamCelda;
 

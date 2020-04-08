@@ -33,7 +33,7 @@ public class RouteFinder {
 		
 		//semilla para el generador de nÃºmeros aleatorios
 		//DEBERÃ� COINCIDIR CON EL VALOR PROPORCIONADO AL ROBOT
-		long semilla = 0;  
+		long semilla = 1;  
 		
 		//tamaÃ±o del mapa de obstÃ¡culos
 		//DEBERÃ� COINCIDIR CON EL VALOR PROPORCIONADO AL ROBOT
@@ -116,7 +116,6 @@ public class RouteFinder {
 		indice++;
 		for (int f = 0; f < nFil; f++){
 			for (int c = 0; c < nCol; c++){
-				System.out.print(tablero[f][c] + " ");
 				if (tablero[f][c] == 1) {//SI HAY OBSTÃ�CULO EN ESA POSICIÃ“N DE LA MALLA
 					
 					existingRobots[indice]=modelRobots[0];   //sittingDuck
@@ -129,7 +128,6 @@ public class RouteFinder {
 					
 				}//if mapa
 			}//for c
-			System.out.println();
 		}//for f
 			
 		System.out.println("Generados " + (indice -1) + " sitting ducks.");
